@@ -32,7 +32,20 @@ namespace Assignment1
 
         public static IEnumerable<string> InnerText(string html, string tag)
         {
-            throw new NotImplementedException();
+            String regex1 = $@"(?<{tag}><[^b](?:\s|>)[^<>]+>(?<text>[^<]+))";
+            String regex2 = @"(?<partTwo>(?<statTag>[<]{0,4}[>])|(?<endTag>[<\/].{0,4}[>]))";
+        
+            if (Regex.IsMatch(html, regex1)) {
+                foreach (Match m in Regex.Matches(html, regex1)) {
+                    GroupCollection gc = m.Groups;
+                    yield return gc["text"].ToString();
+                }
+            } else {
+                yield return Regex.Replace(html, regex2, "").Trim();
+            }
+
         }
+        
+    }
     }
 }
